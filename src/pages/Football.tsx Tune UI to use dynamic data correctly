@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { callAPI } from '../lib/api';
-import { Trophy, Calendar, Loader2, AlertCircle } from 'lucide-react';
+import { Trophy, Calendar, Loader2, AlertCircle, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -73,7 +73,7 @@ export function Football() {
           <span>{error}</span>
         </div>
       ) : data.length === 0 ? (
-        <div className="empty-state max-w-lg mx-auto text-center">
+        <div className="empty-state max-w-lg mx-auto">
           Hakuna mechi zinazochezwa kwa sasa hapa.
         </div>
       ) : (

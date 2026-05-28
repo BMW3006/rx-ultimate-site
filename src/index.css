@@ -75,6 +75,19 @@
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
 }
 
+/* UI States */
+.spinner {
+  @apply w-8 h-8 border-4 border-t-primary border-transparent rounded-full animate-spin;
+}
+
+.error-message {
+  @apply p-4 bg-red-900/20 border border-red-500/50 text-red-500 rounded-lg text-center;
+}
+
+.empty-state {
+  @apply p-8 text-center text-muted-foreground border border-dashed border-border rounded-lg;
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

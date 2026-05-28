@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { callAPI } from '../lib/api';
-import { Download, Youtube, Smartphone, Instagram, Link2, Loader2, CheckCircle2 } from 'lucide-react';
+import { Download, Youtube, Smartphone, Instagram, Link2, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
-type Platform = 'yt_mp3' | 'yt_mp4' | 'tiktok' | 'insta' | 'insta_nex';
+type Platform = 'yt_mp3' | 'yt_mp4' | 'tiktok' | 'insta';
 
 export function Downloader() {
   const [platform, setPlatform] = useState<Platform>('yt_mp4');
@@ -25,7 +25,6 @@ export function Downloader() {
     try {
       let endpoint = '';
       let params: any = { url };
-      let provider: 'gifted' | 'nexoracle' = 'gifted';
 
       switch (platform) {
         case 'yt_mp3': endpoint = '/download/savetubemp3'; break;
@@ -35,29 +34,21 @@ export function Downloader() {
           break;
         case 'tiktok': endpoint = '/download/tiktokdlv5'; break;
         case 'insta': endpoint = '/download/instadl'; break;
-        case 'insta_nex': 
-          endpoint = '/downloader/insta'; 
-          provider = 'nexoracle';
-          break;
       }
 
-      const res = await callAPI(endpoint, params, provider);
+      const res = await callAPI(endpoint, params);
       
-      const downloadUrl = res.result?.download_url || res.result?.url || res.url || (res.data && res.data[0]?.url);
+      // Handle different response structures
+      const downloadUrl = res.result?.download_url || res.result?.url || res.url;
       
       if (downloadUrl) {
-        setResult({ 
-          ...res.result, 
-          downloadUrl, 
-          title: res.result?.title || res.caption || 'Media File',
-          thumbnail: res.result?.thumbnail || res.thumbnail
-        });
-        toast.success('Link imepatikana!');
+        setResult({ ...res.result, downloadUrl });
+        toast.success('Link imepatikana kwa mafanikio!');
       } else {
-        throw new Error('Haikupata link');
+        throw new Error('Haikupata link ya kupakua');
       }
     } catch (err) {
-      toast.error('Imeshindwa kupata link. Jaribu tena baadae.');
+      toast.error('Imeshindwa kupata link. Hakikisha URL ni sahihi.');
     } finally {
       setLoading(false);
     }
@@ -68,19 +59,18 @@ export function Downloader() {
     { id: 'yt_mp3', label: 'YouTube MP3', icon: Youtube, color: 'text-red-400' },
     { id: 'tiktok', label: 'TikTok', icon: Smartphone, color: 'text-cyan-400' },
     { id: 'insta', label: 'Instagram', icon: Instagram, color: 'text-pink-500' },
-    { id: 'insta_nex', label: 'Insta (Nex)', icon: Instagram, color: 'text-purple-500' },
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-16 min-h-screen text-white">
+    <div className="max-w-4xl mx-auto px-4 py-16 min-h-screen">
       <div className="text-center mb-16">
         <h1 className="text-5xl font-black mb-6 flex items-center justify-center gap-4">
           <Download className="text-primary h-12 w-12" /> MEDIA DOWNLOADER
         </h1>
-        <p className="text-gray-400 text-lg">Pakua media kutoka kote duniani kwa kutumia teknolojia ya RX Ultimate.</p>
+        <p className="text-gray-400 text-lg">Pakua video na audio kutoka mitandao ya kijamii kwa sekunde chache.</p>
       </div>
 
-      <div className="flex flex-wrap justify-center gap-4 mb-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
         {platforms.map((p) => (
           <button
             key={p.id}
@@ -88,29 +78,29 @@ export function Downloader() {
               setPlatform(p.id as Platform);
               setResult(null);
             }}
-            className={`px-6 py-4 rounded-2xl border transition-all flex items-center gap-3 ${
+            className={`p-6 rounded-2xl border transition-all flex flex-col items-center gap-3 ${
               platform === p.id 
-                ? 'bg-primary/10 border-primary text-primary' 
+                ? 'bg-primary/10 border-primary text-primary shadow-[0_0_20px_rgba(0,229,255,0.1)]' 
                 : 'bg-[#111111] border-white/5 text-gray-500 hover:text-white'
             }`}
           >
-            <p.icon className={`h-6 w-6 ${platform === p.id ? p.color : ''}`} />
-            <span className="font-bold text-xs uppercase tracking-widest whitespace-nowrap">{p.label}</span>
+            <p.icon className={`h-8 w-8 ${platform === p.id ? p.color : ''}`} />
+            <span className="font-bold text-xs uppercase tracking-widest">{p.label}</span>
           </button>
         ))}
       </div>
 
       <div className="bg-[#111111] p-8 rounded-[2rem] border border-white/10 shadow-2xl space-y-8">
         <div className="space-y-4">
-          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Weka Link ya Media</label>
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Weka Link ya Video</label>
           <div className="relative group">
             <Link2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder={`Weka ${platform.replace('_', ' ').toUpperCase()} link hapa...`}
-              className="w-full bg-black/40 border border-white/10 rounded-2xl py-5 pl-12 pr-4 focus:border-primary outline-none transition-all text-lg text-white"
+              placeholder={`Paste ${platform.split('_')[0]} link hapa...`}
+              className="w-full bg-black/40 border border-white/10 rounded-2xl py-5 pl-12 pr-4 focus:border-primary outline-none transition-all text-lg"
             />
           </div>
         </div>
@@ -140,7 +130,7 @@ export function Downloader() {
             <Loader2 className="animate-spin h-6 w-6" />
           ) : (
             <>
-              <Download className="h-6 w-6" /> PROSESI LINK
+              <Download className="h-6 w-6" /> TAFUTA FILE
             </>
           )}
         </button>
@@ -153,19 +143,16 @@ export function Downloader() {
               className="mt-8 pt-8 border-t border-white/5 flex flex-col items-center gap-6"
             >
               <div className="flex items-center gap-2 text-primary font-black">
-                <CheckCircle2 className="h-6 w-6" /> FILE LAKO TAYARI!
+                <CheckCircle2 className="h-6 w-6" /> TAYARI KUPAKUA!
               </div>
               
               <div className="bg-black/40 p-6 rounded-2xl border border-white/5 w-full flex flex-col md:flex-row items-center gap-6">
                 {result.thumbnail && (
-                  <img src={result.thumbnail} className="w-40 rounded-xl shadow-lg border border-white/10" alt="Thumbnail" />
+                  <img src={result.thumbnail} className="w-40 rounded-xl shadow-lg" alt="Thumbnail" />
                 )}
                 <div className="flex-1 text-center md:text-left">
-                  <h3 className="font-bold text-lg text-white mb-2 line-clamp-2">{result.title}</h3>
-                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-                    <span className="bg-white/5 px-3 py-1 rounded-full text-xs text-gray-400">Media: {platform.toUpperCase()}</span>
-                    {result.size && <span className="bg-white/5 px-3 py-1 rounded-full text-xs text-gray-400">Size: {result.size}</span>}
-                  </div>
+                  <h3 className="font-bold text-lg text-white mb-2 line-clamp-2">{result.title || 'Video Title'}</h3>
+                  <p className="text-gray-500 text-sm">Ukubwa: {result.size || 'Unknown'} | Quality: {result.quality || quality}</p>
                 </div>
                 <a
                   href={result.downloadUrl}
@@ -173,7 +160,7 @@ export function Downloader() {
                   rel="noreferrer"
                   className="bg-primary text-black px-10 py-4 rounded-xl font-black hover:scale-110 transition-transform whitespace-nowrap"
                 >
-                  DOWNLOAD
+                  PAKUA SASA
                 </a>
               </div>
             </motion.div>

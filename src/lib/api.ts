@@ -1,19 +1,34 @@
 import { CONFIG } from '../config';
 
-export async function apiFetch(endpoint: string, params: Record<string, string> = {}) {
-  const url = new URL(`${CONFIG.BASE_URL}${endpoint}`);
-  url.searchParams.append('apikey', CONFIG.API_KEY);
+type Provider = 'gifted' | 'nexoracle';
+
+export async function callAPI(
+  endpoint: string, 
+  params: Record<string, string | number> = {}, 
+  provider: Provider = 'gifted'
+) {
+  const baseUrl = provider === 'gifted' ? CONFIG.GIFTED_BASE_URL : CONFIG.NEXORACLE_BASE_URL;
+  const apiKey = provider === 'gifted' ? CONFIG.GIFTED_API_KEY : CONFIG.NEXORACLE_API_KEY;
+  
+  const url = new URL(`${baseUrl}${endpoint}`);
+  url.searchParams.append('apikey', apiKey);
   
   Object.entries(params).forEach(([key, value]) => {
-    url.searchParams.append(key, value);
+    url.searchParams.append(key, String(value));
   });
 
   try {
     const response = await fetch(url.toString());
-    if (!response.ok) throw new Error(`API error: ${response.status}`);
-    return await response.json();
+    const data = await response.json();
+    
+    // Check for common error flags in various APIs
+    if (data.status === false || data.success === false) {
+      throw new Error(data.message || 'Hitilafu imetokea kwenye API');
+    }
+    
+    return data;
   } catch (error) {
-    console.error('Fetch error:', error);
+    console.error(`API Error (${provider}):`, error);
     throw error;
   }
 }

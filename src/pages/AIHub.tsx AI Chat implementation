@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { callAPI } from '../lib/api';
-import { Bot, Send, User, Sparkles } from 'lucide-react';
+import { MessageSquare, Bot, Send, Loader2, User, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
 
@@ -74,6 +74,7 @@ export function AIHub() {
       </div>
 
       <div className="flex-1 bg-[#111111] rounded-3xl border border-white/10 flex flex-col overflow-hidden shadow-2xl">
+        {/* Chat Messages */}
         <div 
           ref={scrollRef}
           className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-hide"
@@ -81,7 +82,7 @@ export function AIHub() {
           {messages.length === 0 && (
             <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-40">
               <Bot className="h-16 w-16 text-primary" />
-              <p className="max-w-xs font-medium text-white">
+              <p className="max-w-xs font-medium">
                 Habari! Mimi ni msaidizi wako wa AI. Niulize chochote kwa Kiswahili au lugha nyingine.
               </p>
             </div>
@@ -119,6 +120,7 @@ export function AIHub() {
           )}
         </div>
 
+        {/* Chat Input */}
         <div className="p-4 bg-black/40 border-t border-white/5">
           <div className="relative flex items-center gap-2">
             <input
@@ -127,12 +129,12 @@ export function AIHub() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
               placeholder={`Andika swali lako hapa kwa ajili ya ${model.toUpperCase()}...`}
-              className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm text-white"
+              className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm"
             />
             <button
               onClick={handleSend}
               disabled={loading || !input.trim()}
-              className="bg-primary text-black p-4 rounded-2xl font-bold hover:scale-105 active:scale-95 disabled:opacity-50 transition-all"
+              className="bg-primary text-black p-4 rounded-2xl font-bold hover:scale-105 active:scale-95 disabled:opacity-50 disabled:hover:scale-100 transition-all"
             >
               <Send className="h-5 w-5" />
             </button>
