@@ -22,8 +22,8 @@ export function Sports() {
       setData(basketRes.result?.matches || basketRes.result || []);
       setStreams(streamRes.result || []);
     } catch (err) {
-      setError('Imeshindwa kupata data za michezo kwa sasa.');
-      toast.error('Hitilafu ya kupata data');
+      setError('Failed to get sports data at this time.');
+      toast.error('Error fetching data');
     } finally {
       setLoading(false);
     }
@@ -57,12 +57,12 @@ export function Sports() {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 bg-[#111111] rounded-3xl border border-white/5">
               <Loader2 className="animate-spin text-primary h-10 w-10 mb-4" />
-              <p className="text-gray-500">Inatafuta mechi za kikapu...</p>
+              <p className="text-gray-500">Searching for basketball matches...</p>
             </div>
           ) : error ? (
             <div className="error-message">{error}</div>
           ) : data.length === 0 ? (
-            <div className="empty-state">Hakuna mechi za kikapu kwa sasa.</div>
+            <div className="empty-state">No basketball matches currently live.</div>
           ) : (
             <div className="grid gap-4">
               {data.map((game, i) => (
@@ -119,7 +119,7 @@ export function Sports() {
               </div>
             )) : (
               <div className="p-12 text-center text-gray-500 border border-white/5 rounded-3xl">
-                {loading ? 'Inapakia streams...' : 'Hakuna matangazo ya moja kwa moja.'}
+                {loading ? 'Loading streams...' : 'No live streams found.'}
               </div>
             )}
           </div>

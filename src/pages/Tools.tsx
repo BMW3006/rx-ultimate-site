@@ -12,7 +12,7 @@ export function Tools() {
 
   const generateStylish = async () => {
     if (!text.trim()) {
-      toast.error('Tafadhali andika maneno hapa');
+      toast.error('Please type words here');
       return;
     }
 
@@ -21,9 +21,9 @@ export function Tools() {
       const res = await callAPI('/misc/stylish-text', { text }, 'nexoracle');
       const styles = res.result || [];
       setResults(Array.isArray(styles) ? styles : Object.values(styles));
-      toast.success('Mitindo imetengenezwa!');
+      toast.success('Styles generated!');
     } catch (err) {
-      toast.error('Imeshindwa kutengeneza mitindo.');
+      toast.error('Failed to generate styles.');
     } finally {
       setLoading(false);
     }
@@ -32,7 +32,7 @@ export function Tools() {
   const copyToClipboard = (val: string, index: number) => {
     navigator.clipboard.writeText(val);
     setCopiedIndex(index);
-    toast.success('Imenakiliwa!');
+    toast.success('Copied!');
     setTimeout(() => setCopiedIndex(null), 2000);
   };
 
@@ -42,7 +42,7 @@ export function Tools() {
         <h1 className="text-5xl font-black mb-6 flex items-center justify-center gap-4">
           <Wand2 className="text-primary h-12 w-12" /> SMART TOOLS
         </h1>
-        <p className="text-gray-400 text-lg">Tengeneza maandishi ya kupendeza kwa ajili ya wasifu wako wa kijamii.</p>
+        <p className="text-gray-400 text-lg">Generate attractive text for your social profiles.</p>
       </div>
 
       <div className="bg-[#111111] p-8 rounded-[2rem] border border-white/10 shadow-2xl mb-12">
@@ -54,7 +54,7 @@ export function Tools() {
               value={text}
               onChange={(e) => setText(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && generateStylish()}
-              placeholder="Andika maneno yako hapa..."
+              placeholder="Type your text here..."
               className="w-full bg-black/40 border border-white/10 rounded-2xl py-5 pl-12 pr-4 focus:border-primary outline-none text-lg transition-all text-white"
             />
           </div>
@@ -63,7 +63,7 @@ export function Tools() {
             disabled={loading}
             className="bg-primary text-black px-12 py-5 rounded-2xl font-black text-lg hover:scale-[1.05] transition-all flex items-center justify-center gap-3 disabled:opacity-50"
           >
-            {loading ? <Loader2 className="animate-spin" /> : <><Sparkles className="h-5 w-5" /> TENGENEZA</>}
+            {loading ? <Loader2 className="animate-spin" /> : <><Sparkles className="h-5 w-5" /> GENERATE</>}
           </button>
         </div>
       </div>
@@ -96,7 +96,7 @@ export function Tools() {
       
       {results.length === 0 && !loading && (
         <div className="empty-state max-w-md mx-auto py-20 text-center text-gray-500 border border-dashed border-white/5 rounded-3xl">
-          Andika kitu hapo juu ili uone mitindo mbalimbali ya maandishi.
+          Type something above to see various text styles.
         </div>
       )}
     </div>

@@ -23,7 +23,7 @@ export async function callAPI(
     
     // Check for common error flags in various APIs
     if (data.status === false || data.success === false) {
-      throw new Error(data.message || 'Hitilafu imetokea kwenye API');
+      throw new Error(data.message || 'An error occurred on the API');
     }
     
     return data;

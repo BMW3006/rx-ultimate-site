@@ -15,7 +15,7 @@ export function Downloader() {
 
   const handleDownload = async () => {
     if (!url.trim()) {
-      toast.error('Tafadhali weka URL kwanza');
+      toast.error('Please enter a URL first');
       return;
     }
 
@@ -42,22 +42,16 @@ export function Downloader() {
       }
 
       const res = await callAPI(endpoint, params, provider);
-      
       const downloadUrl = res.result?.download_url || res.result?.url || res.url || (res.data && res.data[0]?.url);
       
       if (downloadUrl) {
-        setResult({ 
-          ...res.result, 
-          downloadUrl, 
-          title: res.result?.title || res.caption || 'Media File',
-          thumbnail: res.result?.thumbnail || res.thumbnail
-        });
-        toast.success('Link imepatikana!');
+        setResult({ ...res.result, downloadUrl, title: res.result?.title || res.caption || 'Media File', thumbnail: res.result?.thumbnail || res.thumbnail });
+        toast.success('Link found successfully!');
       } else {
-        throw new Error('Haikupata link');
+        throw new Error('Link not found');
       }
     } catch (err) {
-      toast.error('Imeshindwa kupata link. Jaribu tena baadae.');
+      toast.error('Failed to get link. Make sure the URL is correct.');
     } finally {
       setLoading(false);
     }
@@ -77,7 +71,7 @@ export function Downloader() {
         <h1 className="text-5xl font-black mb-6 flex items-center justify-center gap-4">
           <Download className="text-primary h-12 w-12" /> MEDIA DOWNLOADER
         </h1>
-        <p className="text-gray-400 text-lg">Pakua media kutoka kote duniani kwa kutumia teknolojia ya RX Ultimate.</p>
+        <p className="text-gray-400 text-lg">Download media from all over the world using RX Ultimate technology.</p>
       </div>
 
       <div className="flex flex-wrap justify-center gap-4 mb-12">
@@ -102,14 +96,14 @@ export function Downloader() {
 
       <div className="bg-[#111111] p-8 rounded-[2rem] border border-white/10 shadow-2xl space-y-8">
         <div className="space-y-4">
-          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Weka Link ya Media</label>
+          <label className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">Enter Media Link</label>
           <div className="relative group">
             <Link2 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder={`Weka ${platform.replace('_', ' ').toUpperCase()} link hapa...`}
+              placeholder={`Enter ${platform.replace('_', ' ').toUpperCase()} link here...`}
               className="w-full bg-black/40 border border-white/10 rounded-2xl py-5 pl-12 pr-4 focus:border-primary outline-none transition-all text-lg text-white"
             />
           </div>
@@ -140,7 +134,7 @@ export function Downloader() {
             <Loader2 className="animate-spin h-6 w-6" />
           ) : (
             <>
-              <Download className="h-6 w-6" /> PROSESI LINK
+              <Download className="h-6 w-6" /> PROCESS LINK
             </>
           )}
         </button>
@@ -153,7 +147,7 @@ export function Downloader() {
               className="mt-8 pt-8 border-t border-white/5 flex flex-col items-center gap-6"
             >
               <div className="flex items-center gap-2 text-primary font-black">
-                <CheckCircle2 className="h-6 w-6" /> FILE LAKO TAYARI!
+                <CheckCircle2 className="h-6 w-6" /> YOUR FILE IS READY!
               </div>
               
               <div className="bg-black/40 p-6 rounded-2xl border border-white/5 w-full flex flex-col md:flex-row items-center gap-6">

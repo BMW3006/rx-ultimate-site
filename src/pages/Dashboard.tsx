@@ -7,28 +7,28 @@ import { callAPI } from '../lib/api';
 const features = [
   {
     title: 'Football Central',
-    desc: 'Matokeo ya mubashara, habari za usajili, na msimamo wa ligi.',
+    desc: 'Live scores, transfer news, and league standings.',
     icon: Trophy,
     path: '/football',
     color: 'text-primary'
   },
   {
     title: 'AI Playground',
-    desc: 'Inaendeshwa na GPT-4o & Gemini. Uliza maswali na upate majibu papo hapo.',
+    desc: 'Powered by GPT-4o & Gemini. Ask questions and get answers instantly.',
     icon: Cpu,
     path: '/ai',
     color: 'text-purple-400'
   },
   {
     title: 'Media Downloader',
-    desc: 'Pakua kutoka YouTube, TikTok, na Instagram kwa ubora wa juu.',
+    desc: 'Download from YouTube, TikTok, and Instagram in high quality.',
     icon: Download,
     path: '/download',
     color: 'text-green-400'
   },
   {
     title: 'Smart Tools',
-    desc: 'Maandishi ya mitindo na zana nyingine za kidijitali sehemu moja.',
+    desc: 'Stylish text and other digital tools in one place.',
     icon: Wrench,
     path: '/tools',
     color: 'text-yellow-400'
@@ -85,15 +85,15 @@ export function Dashboard() {
               THE <span className="text-primary cyan-text-glow">ULTIMATE</span> SPORTS & AI HUB
             </h1>
             <p className="text-xl text-gray-400 mb-10 max-w-xl leading-relaxed">
-              Pata uzoefu wa kipekee wa habari za michezo na zana za kisasa za AI. 
-              Matokeo ya papo hapo, habari za kimataifa, na huduma bora za kidijitali.
+              Experience a unique blend of sports news and cutting-edge AI tools. 
+              Real-time scores, global news, and premium digital services.
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/football" className="bg-primary text-black px-10 py-4 rounded-2xl font-black text-lg hover:scale-105 transition-transform flex items-center shadow-[0_0_30px_rgba(0,229,255,0.4)]">
-                ANZA SASA <ArrowRight className="ml-2 h-6 w-6" />
+                GET STARTED <ArrowRight className="ml-2 h-6 w-6" />
               </Link>
               <Link to="/ai" className="bg-white/5 backdrop-blur-xl border border-white/10 text-white px-10 py-4 rounded-2xl font-black text-lg hover:bg-white/10 transition-colors">
-                GUNDUA AI
+                EXPLORE AI
               </Link>
             </div>
           </motion.div>
@@ -108,7 +108,7 @@ export function Dashboard() {
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
             <div>
               <h2 className="text-3xl font-black text-white mb-2">LIVE MATCHES</h2>
-              <p className="text-gray-500 font-medium">Kinachoendelea uwanjani hivi sasa kote duniani.</p>
+              <p className="text-gray-500 font-medium">What's happening on the pitch right now around the world.</p>
             </div>
             <Link to="/football" className="text-primary font-black flex items-center gap-2 group">
               VIEW ALL GAMES <ArrowRight className="h-5 w-5 group-hover:translate-x-2 transition-transform" />
@@ -119,7 +119,7 @@ export function Dashboard() {
             {loading ? (
               <div className="col-span-full flex flex-col items-center py-10">
                 <Loader2 className="animate-spin text-primary mb-4" />
-                <p className="text-gray-600">Inatafuta mechi...</p>
+                <p className="text-gray-600">Searching matches...</p>
               </div>
             ) : liveMatches.length > 0 ? (
               liveMatches.map((match, i) => (
@@ -141,7 +141,7 @@ export function Dashboard() {
                 </div>
               ))
             ) : (
-              <div className="col-span-full py-10 text-center text-gray-600">Hakuna mechi za moja kwa moja kwa sasa.</div>
+              <div className="col-span-full py-10 text-center text-gray-600">No live matches at the moment.</div>
             )}
           </div>
         </div>
@@ -150,8 +150,8 @@ export function Dashboard() {
       {/* Categories Grid */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-black text-white mb-4">HUDUMA ZETU</h2>
-          <p className="text-gray-500 max-w-2xl mx-auto">Kila kitu unachohitaji kwa ajili ya michezo, AI, na zana za kidijitali sehemu moja.</p>
+          <h2 className="text-4xl font-black text-white mb-4">OUR SERVICES</h2>
+          <p className="text-gray-500 max-w-2xl mx-auto">Everything you need for sports, AI, and digital tools in one place.</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -172,7 +172,7 @@ export function Dashboard() {
                 <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-primary transition-colors">{f.title}</h3>
                 <p className="text-gray-500 mb-8 line-clamp-2">{f.desc}</p>
                 <div className="flex items-center text-primary font-black text-sm group-hover:gap-3 transition-all">
-                  GUNDUA ZAIDI <ArrowRight className="ml-2 h-4 w-4" />
+                  DISCOVER MORE <ArrowRight className="ml-2 h-4 w-4" />
                 </div>
               </Link>
             </motion.div>
@@ -185,12 +185,12 @@ export function Dashboard() {
         <div className="bg-gradient-to-r from-primary to-cyan-600 rounded-[3rem] p-12 md:p-20 relative overflow-hidden">
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="max-w-xl text-center md:text-left">
-              <h2 className="text-4xl md:text-5xl font-black text-black mb-6">ANGALIA MICHEZO LIVE POPOTE ULIPO</h2>
+              <h2 className="text-4xl md:text-5xl font-black text-black mb-6">WATCH SPORTS LIVE ON THE GO</h2>
               <p className="text-black/70 text-lg mb-8 font-bold">
-                Pata ufikiaji wa viungo vya kutazama michezo mbalimbali moja kwa moja kwenye simu au kompyuta yako.
+                Get access to live streaming links for various sports directly on your phone or computer.
               </p>
               <Link to="/sports" className="inline-flex items-center gap-3 bg-black text-white px-10 py-5 rounded-2xl font-black hover:scale-110 transition-transform">
-                <PlayCircle /> ANZA KUTAZAMA
+                <PlayCircle /> START WATCHING
               </Link>
             </div>
             <div className="hidden md:block">

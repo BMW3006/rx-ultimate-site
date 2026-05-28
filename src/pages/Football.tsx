@@ -23,8 +23,8 @@ export function Football() {
       const matches = res.result?.matches || res.result || [];
       setData(Array.isArray(matches) ? matches : []);
     } catch (err) {
-      setError('Imeshindwa kupata data za soka. Tafadhali jaribu tena baadae.');
-      toast.error('Hitilafu ya kupata matokeo');
+      setError('Failed to fetch football data. Please try again later.');
+      toast.error('Error fetching results');
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ export function Football() {
       {loading ? (
         <div className="flex flex-col items-center justify-center py-24">
           <div className="spinner mb-4"></div>
-          <p className="text-gray-400 animate-pulse">Inapakia matokeo ya soka...</p>
+          <p className="text-gray-400 animate-pulse">Loading football results...</p>
         </div>
       ) : error ? (
         <div className="error-message max-w-lg mx-auto flex items-center justify-center gap-3">
@@ -74,7 +74,7 @@ export function Football() {
         </div>
       ) : data.length === 0 ? (
         <div className="empty-state max-w-lg mx-auto text-center">
-          Hakuna mechi zinazochezwa kwa sasa hapa.
+          No matches being played right now.
         </div>
       ) : (
         <motion.div 
@@ -95,7 +95,7 @@ export function Football() {
                   {match.league || (activeTab === 'epl' ? 'Premier League' : 'Match')}
                 </span>
                 <span className="text-xs text-gray-500 font-bold flex items-center gap-1">
-                  <Calendar className="h-3 w-3" /> {match.time || 'Wakati haujulikani'}
+                  <Calendar className="h-3 w-3" /> {match.time || 'Time unknown'}
                 </span>
               </div>
               
@@ -116,7 +116,7 @@ export function Football() {
                 }`}>
                   {match.status || (activeTab === 'epl' ? 'FT' : 'LIVE')}
                 </span>
-                <button className="text-primary text-xs font-black uppercase hover:underline">Takwimu</button>
+                <button className="text-primary text-xs font-black uppercase hover:underline">Statistics</button>
               </div>
             </motion.div>
           ))}

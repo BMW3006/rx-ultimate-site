@@ -30,11 +30,11 @@ export function AIHub() {
       const endpoint = model === 'gpt4o' ? '/ai/gpt4o' : '/ai/gemini';
       const res = await callAPI(endpoint, { q: userMessage });
       
-      const botResponse = res.result || 'Samahani, sikuweza kupata jibu kwa wakati huu.';
+      const botResponse = res.result || 'Sorry, I could not get an answer at this time.';
       setMessages(prev => [...prev, { role: 'assistant', content: botResponse }]);
     } catch (err) {
-      toast.error('Imeshindwa kuwasiliana na AI');
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Hitilafu imetokea. Tafadhali jaribu tena.' }]);
+      toast.error('Failed to communicate with AI');
+      setMessages(prev => [...prev, { role: 'assistant', content: 'An error occurred. Please try again.' }]);
     } finally {
       setLoading(false);
     }
@@ -82,7 +82,7 @@ export function AIHub() {
             <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-40">
               <Bot className="h-16 w-16 text-primary" />
               <p className="max-w-xs font-medium text-white">
-                Habari! Mimi ni msaidizi wako wa AI. Niulize chochote kwa Kiswahili au lugha nyingine.
+                Hello! I am your AI assistant. Ask me anything in English or any other language.
               </p>
             </div>
           )}
@@ -113,7 +113,7 @@ export function AIHub() {
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
               <div className="flex items-center gap-3 bg-white/5 p-4 rounded-2xl">
                 <div className="spinner h-4 w-4"></div>
-                <span className="text-xs text-gray-500 italic">AI inafikiri...</span>
+                <span className="text-xs text-gray-500 italic">AI is thinking...</span>
               </div>
             </motion.div>
           )}
@@ -126,7 +126,7 @@ export function AIHub() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-              placeholder={`Andika swali lako hapa kwa ajili ya ${model.toUpperCase()}...`}
+              placeholder={`Ask ${model.toUpperCase()} anything here...`}
               className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-6 py-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm text-white"
             />
             <button
